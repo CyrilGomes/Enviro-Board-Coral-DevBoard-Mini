@@ -1,12 +1,10 @@
 import busio
 import board
-from periphery import I2C
 from smbus2 import SMBus
 import adafruit_bmp280
 import busio
 import adafruit_ssd1306
 import digitalio
-import time
 import asyncio
 class EnviroBoard:
 
@@ -16,9 +14,9 @@ class EnviroBoard:
 #        self.luminosity = 0
 #        self.pressure = 0
         spi = board.SPI()
-        reset_pin = digitalio.DigitalInOut(board.GPIO7) # any pin!
-        cs_pin = digitalio.DigitalInOut(board.SPI_CSB)    # any pin!
-        dc_pin = digitalio.DigitalInOut(board.GPIO1)    # any pin!
+        reset_pin = digitalio.DigitalInOut(board.GPIO7)
+        cs_pin = digitalio.DigitalInOut(board.SPI_CSB)
+        dc_pin = digitalio.DigitalInOut(board.GPIO1)
 
         self.display = adafruit_ssd1306.SSD1306_SPI(128, 32, spi, dc_pin, reset_pin, cs_pin)
 
@@ -57,7 +55,6 @@ class EnviroBoard:
         expo = right>>4
         fractio = (right&15<<8) | (left)
         bus.read_word_data(0x45,0x01)
-        print ((2**expo)*fractio*1.2)
         return (2**expo)*fractio*1.2
 
     def get_pressure(self):
